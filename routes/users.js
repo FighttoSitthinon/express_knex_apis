@@ -20,7 +20,14 @@ router.post('/', (req, res, next) => {
         name: req.body.name,
         password: req.body.password
       }).then(resp => {
-        res.send(resp);
+        //If post success response all data
+        try {
+          knex.select().from('users').then(result => {
+            res.send(result);
+          });
+        } catch (err) {
+          res.send({ error: err });
+        }
       });
     } else {
       res.send({ error: 'Value not valid.' });
